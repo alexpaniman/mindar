@@ -182,33 +182,6 @@ std::vector<std::string> saves() {
     return listed_saves;
 }
 
-
-    // bot.getEvents().onAnyMessage([&](TgBot::Message::Ptr message) {
-    //     printf("User wrote %s\n", message->text.c_str());
-
-    // 	std::string response = communicate_command(proc, message->text + "\n");
-
-    // 	std::ofstream of("log");
-    // 	of << response;
-    // 	of.flush();
-
-    // 	char *args[] = { NULL };
-    //     process creator = create_process("/home/alex/test/mindustry-bot-cpp/create-image.sh", args);
-
-    //     int status;
-    // 	waitpid(creator.pid, &status, 0);
-
-    //     TgBot::InputFile::Ptr photo = TgBot::InputFile::fromFile("/home/alex/test/mindustry-bot-cpp/image.png", "image/png");
-    //     bot.getApi().sendPhoto(message->chat->id, photo);
-    // });
-
-
-
-
-
-
-
-
 std::vector<std::string> split(const std::string &text, char sep = ' ') {
     std::vector<std::string> strs;
 
