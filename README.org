@@ -1,0 +1,75 @@
+* MINDAR
+
+Mindar stands for Mindustry Interaction & Direct Authority Remote.
+
+It's a Telegram bot, which should provide a convenient interaction layer for Mindustry server, which includes launching games from it's interface, saving and loading games, looking at current game stats and possibly more.
+
+
+/Beware, its still very early in its development, so expect nothing/
+
+*I wish you fun construction!*
+
+** Building
+
+*** Prerequisites
+You need to have:
+
++ ~Clang~ 
++ ~CMake~
++ ~ninja~
++ ~tgbot-cpp~
+
+installed on your system.
+
+On ~Arch Linux~ you can install all of them with:
+#+begin_src shell
+  pacman -Sy --needed cmake ninja clang
+#+end_src
+
+On ~Ubuntu~ you can install them with:
+
+#+begin_src shell
+  sudo apt-get install -y cmake ninja-build clang
+#+end_src
+
+If you are using other distros, use your package 
+manager to look up package names, and install them.
+
+
+To install ~TgBot~ library, consult it's github page: [[https://github.com/reo7sp/tgbot-cpp][click]] and follow
+instructions (also you can check out github actions' workflow, which
+installs it on Ubuntu, but beware it might get outdated).
+
+
+This may or may not work on ~Windows~ or ~MacOS~, but
+hasn't been tested on either.
+
+
+*** Installation
+*Clone this repository:*
+
+#+begin_src shell
+  git clone git@github.com:alexpaniman/mindar.git
+#+end_src
+
+*Then configure and build:*
+
+#+begin_src shell
+  cmake -B build -DCMAKE_CXX_COMPILER=clang++ -G Ninja -DCMAKE_BUILD_TYPE=Release
+  cmake --build build
+  # Make sure that you use recent clang!
+  # Projects uses some pretty new features.
+#+end_src
+
+Optionally you can use ~-DCMAKE_EXPORT_COMPILE_COMMANDS=ON~ if you
+want to import this project with ~clangd~ language server.
+
+And ~-DFORCE_COLORED_OUTPUT=ON~ to get colorful diagnostics with ~Ninja~
+
+Now you can run this bot (it will try to launch ~server.jar~ mindustry
+server, so you'd better put it in this folder before hand or launch it
+from directory you want mindustry server to start from):
+#+begin_src shell
+  BOT_TOKE=<your-bot-token> ./build/mindar
+#+end_src
+
