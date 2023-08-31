@@ -1,2 +1,9 @@
-mindar
-mindar.debug
+# clangd and ccls' language server's cache
+.cache/
+.ccls-cache/
+
+# any kind of build folders
+*build*/
+
+# in case someone opens project in idea
+.idea/
