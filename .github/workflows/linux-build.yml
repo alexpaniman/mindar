@@ -1,0 +1,38 @@
+name: Build project
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  linux-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'true'
+
+    - name: Install Build Dependencies
+      run: sudo apt-get install -y clang ninja-build cmake
+
+    - name: Install TgBot Dependencies
+      run: sudo apt-get install g++ make binutils cmake libboost-system-dev libssl-dev zlib1g-dev libcurl4-openssl-dev
+
+    - name: Install TgBot
+      run: git clone https://github.com/reo7sp/tgbot-cpp && cd tgbot-cpp && cmake . && make -j4 && sudo make install
+
+    - name: Configure
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=clang++ -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      run: ctest -C ${{env.BUILD_TYPE}}
