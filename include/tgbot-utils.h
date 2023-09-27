@@ -6,6 +6,13 @@
 #include <vector>
 
 
+using chat_id = int64_t;
+
+struct message_id {
+    chat_id from;
+    int32_t id;
+};
+
 namespace tg {
 
     // Opaque class representing everything we need to know to interact with bot
@@ -13,13 +20,12 @@ namespace tg {
 
     struct button { std::string name, callback; };
 
-    using message_id = int;
     struct message {
-	std::string message;
+	std::string text;
 	std::vector<std::vector<button>> inline_markup;
 
-	int32_t send_to(bot &api, int64_t chat_id);
-	void edit_into(bot &api, int64_t chat_id, int32_t message_id);
+	message_id send_to(bot &api, int64_t chat_id) const;
+	void edit_into(bot &api, message_id message) const;
     };
 
     struct sent_message {
@@ -51,7 +57,7 @@ namespace tg {
 
         std::unique_ptr<impl, impl_deleter> impl_;
 
-        friend class message; 
+        friend struct message; 
     };
 
 }

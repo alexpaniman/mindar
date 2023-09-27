@@ -22,9 +22,6 @@ void tg::bot::impl_deleter::operator()(impl* impl) const {
 tg::bot::bot(std::string token):
     impl_(new tg::bot::impl { TgBot::Bot(std::move(token)) }) {
 
-    std::chrono::time_point start = std::chrono::system_clock::now();
-
-
     impl_->bot.getEvents().onAnyMessage([&](TgBot::Message::Ptr message) {
 	sent_message sent {
             message->chat->id,
@@ -72,7 +69,7 @@ void tg::bot::run() {
 }
 
 
-static TgBot::InlineKeyboardMarkup::Ptr keyboard(std::vector<std::vector<tg::button>> &keyboard) {
+static TgBot::InlineKeyboardMarkup::Ptr keyboard(const std::vector<std::vector<tg::button>> &keyboard) {
     auto inline_keyboard = std::make_shared<TgBot::InlineKeyboardMarkup>();
 
     auto &rows = inline_keyboard->inlineKeyboard;
@@ -101,19 +98,19 @@ static void try_ignoring_errors(auto&& lambda) {
     }
 }
 
-void tg::message::edit_into(bot &api, int64_t chat_id, int32_t message_id) {
+void tg::message::edit_into(bot &api, message_id message) const {
     auto &internalApi = api.impl_->bot.getApi();
     auto kbd = keyboard(inline_markup);
 
     try_ignoring_errors([&]() {
 	internalApi.editMessageText(
-            message, chat_id, message_id, "",
+            text, message.from, message.id, "",
 	    "markdown", false, kbd
 	);
     });
 }
 
-int32_t tg::message::send_to(bot &api, int64_t chat_id) {
+message_id tg::message::send_to(bot &api, int64_t chat_id) const {
     auto &internalApi = api.impl_->bot.getApi();
 
     auto kbd = keyboard(inline_markup);
@@ -121,10 +118,10 @@ int32_t tg::message::send_to(bot &api, int64_t chat_id) {
     int32_t message_id = 0;
     try_ignoring_errors([&]() {
 	message_id = internalApi.sendMessage(
-	    chat_id, message, false,
+	    chat_id, text, false,
 	    0, kbd, "markdown"
 	)->messageId;
     });
 
-    return message_id;
+    return { chat_id, message_id };
 }

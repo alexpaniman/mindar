@@ -44,6 +44,7 @@ add_executable(${PROJECT_NAME}
     src/process-handling.cpp
     src/tgbot-utils.cpp
     src/time-defaults.cpp
+    src/string-tools.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)

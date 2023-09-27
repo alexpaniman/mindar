@@ -2,24 +2,24 @@
 
 #include <sstream>
 
-std::string mindustry_game::describe_status() {
+std::string mindustry_game::describe_status() const {
     std::ostringstream message;
 
     switch (status_) {
     case RUNNING:
-	message << "▶️ run";
+	message << "running";
 	break;
 
     case PAUSED:
-	message << "⏸ paused";
+	message << "paused";
 	break;
 
     case STOPPED:
-	message << "⏹️ stopped";
+	message << "stopped";
 	break;
 
     case ENDED:
-	message << "📙 ended";
+	message << "ended";
 	break;
     }
 
@@ -27,15 +27,15 @@ std::string mindustry_game::describe_status() {
 }
 
 
-std::string mindustry_game::describe_game(bool stop) {
+std::string mindustry_game::describe_game() const {
     std::ostringstream message;
     message << "*======== Mindustry Hosted ========*\n\n";
 
     message << "```";
 
-    message << " ⏱️ time: "  << describe_time_point(       launched_) <<  "\n";
-    message << "          (" << describe_passed_time_since(launched_) << ")\n";
-    message << " 🌍  map: "  << hosted_game_                                <<  "\n";
+    message << " ⏱️ time: "  << describe_time_point(       launched_time_) <<  "\n";
+    message << "          (" << describe_passed_time_since(launched_time_) << ")\n";
+    message << " 🌍  map: "  << map_name_                                <<  "\n";
     message << " 🗒️ stat: "  << describe_status();
 
 
